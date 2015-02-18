@@ -13,7 +13,7 @@
           <b>#dash</b>
         </div>
         <div id="title" flex>
-          <a>All our code are belong to you</a>
+          <a>All our code are belong to you</a> t
         </div>
         <div>
           <font-awesome icon="clock-o" style="color: #21b384"></font-awesome>
@@ -21,15 +21,23 @@
         </div>
       </header>
       <main>
-        <pipa-container name="Dogodki" icon="calendar">
-          <pipa-event></pipa-event>
-        </pipa-container>
+        <div horizontal layout>
+          <div flex>
+            <pipa-container name="Dogodki" icon="calendar">
+              <pipa-event id="events" feedType="events" url="https://www.kiberpipa.org/sl/feeds/dogodki/"></pipa-event>
+            </pipa-container>
+            <pipa-container name="Novice" icon="newspaper-o">
+              <pipa-event id="news" feedType="news" url="https://www.kiberpipa.org/sl/feeds/novice/" reverse></pipa-event>
+            </pipa-container>
+          </div>
+        </div>
       </main>
       <footer>
       </footer>
     </div>
-  </template>
-  <script>
+   </template>
+
+   <script>
     (function () {
 
       Polymer({
