@@ -1,0 +1,50 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/polymer-fontawesome/polymer-fontawesome.html">
+<link rel="import" href="../pipa-event/pipa-event.html">
+<link rel="import" href="../pipa-event/pipa-container.html">
+
+<polymer-element name="pipa-dash" attributes="logo">
+  <template>
+    <link rel="stylesheet" href="pipa-dash.css">
+    <div class="container" vertical layout>
+      <header horizontal layout>
+        <div horizontal layout>
+          <img id="logo" src="{{logo}}"></img>
+          <b>#dash</b>
+        </div>
+        <div id="title" flex>
+          <a>All our code are belong to you</a>
+        </div>
+        <div>
+          <font-awesome icon="clock-o" style="color: #21b384"></font-awesome>
+          <a>{{time}}</a>
+        </div>
+      </header>
+      <main>
+        <pipa-container name="Dogodki" icon="calendar">
+          <pipa-event></pipa-event>
+        </pipa-container>
+      </main>
+      <footer>
+      </footer>
+    </div>
+  </template>
+  <script>
+    (function () {
+
+      Polymer({
+        time: (new Date()).toLocaleTimeString(),
+
+        ready: function() {
+          var that = this;
+          setInterval(function () {
+            that.time = (new Date()).toLocaleTimeString();
+          }, 1000);
+        }
+
+        // define element prototype here
+      });
+
+    })();
+  </script>
+</polymer-element>

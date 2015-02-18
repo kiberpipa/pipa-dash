@@ -1,0 +1,98 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/polymer-fontawesome/polymer-fontawesome.html">
+<script src="../../bower_components/feed/src/feed.js"></script>
+<script src="../../bower_components/lodash/lodash.js"></script>
+
+<polymer-element name="pipa-event" attributes="">
+  <template>
+    <link rel="stylesheet" href="pipa-event.css">
+    <div horizontal layout>
+       <div id="image">
+        <img src="https://www.kiberpipa.org/smedia/events/2014/09/druzabne_igre.jpg.jpg"></img>
+      </div>
+      <div id="content" vertical layout flex>
+        <header>
+
+          <div id="title" horizontal layout>
+            <div><font-awesome icon="star"></font-awesome></div>
+            <div flex><a>{{caption}}</a></div>
+          </div>
+
+          <div id="time">
+            <div horizontal around-justified layout>
+              <div>
+                <font-awesome icon="clock-o"></font-awesome><a >{{time}}</a>
+              </div>
+              <template if="{{loc != ''}}">
+                <div>
+                  <font-awesome icon="location-arrow"></font-awesome><a >{{loc}}</a>
+                </div>
+              </template>
+            </div>
+          </div>
+
+        </header>
+        <main>
+          <font-awesome icon="file-text-o"></font-awesome><a id="text">{{text}}</a>
+        </main>
+      <div>
+    </div>
+  </template>
+  <script>
+    (function () {
+
+      Polymer({
+        caption: "POT: Optimizacija spletnega strežnika",
+        text: "This is some dummy text",
+        loc: "Kiberpipa (Gosposvetska 2)",
+        time: "Ponedeljek, 23. feb 2015 ob 17:00",
+
+        days: ["ponedeljek", "torek", "sreda", "četrtek", "petek", "sobota", "nedelja"],
+        months: ["januar", "februar", "marec", "april", "maj", "junij", "julij", "avgust", "september", "oktober", "november", "december"],
+
+        currentPost: 0,
+        interval: 5000,
+
+        // define element prototype here
+        ready: function() {
+          var that = this;
+          var rssReady = function(result) {
+            that.feed = result.feed;
+            that.feed.entries = _.filter(that.feed.entries, function(entry) {
+              return Date.parse(entry.publishedDate) > new Date();
+            });
+            console.log(that.feed);
+            setInterval(that.changeImage.bind(that), that.interval);
+          }
+
+          window.Feed({
+            url: 'https://www.kiberpipa.org/sl/feeds/dogodki/',
+            limit: 100,
+            callback: rssReady
+          });
+        },
+
+        changeImage: function() {
+          var post = this.feed.entries[this.currentPost];
+          this.currentPost = (this.currentPost + 1) % this.feed.entries.length;
+
+          this.caption = post.title;
+          this.time = post.publishedDate;
+          this.text = this.strip(post.content);
+          this.location = post.location;
+        },
+
+        strip: function(html) {
+           var tmp = document.createElement("DIV");
+           tmp.innerHTML = html;
+           return tmp.textContent || tmp.innerText || "";
+        },
+
+        getLocalTime: function(time) {
+
+        }
+      });
+
+    })();
+  </script>
+</polymer-element>

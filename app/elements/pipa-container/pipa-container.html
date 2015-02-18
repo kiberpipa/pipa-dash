@@ -1,0 +1,21 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/polymer-fontawesome/polymer-fontawesome.html">
+
+<polymer-element name="pipa-container" attributes="name icon">
+  <template>
+    <link rel="stylesheet" href="pipa-container.css">
+    <header>
+      <font-awesome icon="{{icon}}"></font-awesome><a>{{name}}:</a>
+    </header>
+    <content></content>
+  </template>
+  <script>
+    (function () {
+
+      Polymer({
+        // define element prototype here
+      });
+
+    })();
+  </script>
+</polymer-element>

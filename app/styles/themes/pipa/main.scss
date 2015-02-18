@@ -1,0 +1,40 @@
+@import 'fonts/font.css';
+@import 'settings.scss';
+
+body {
+  background-color: black;
+  font-family: 'hero_lightlight';
+  color: $primary_color;
+}
+
+body /deep/ b {
+  color: $primary_color;
+}
+
+body /deep/ b {
+  color: $secondary_color;
+}
+
+.pipa-dash {
+  margin: 50px auto 0 auto;
+  width: 100%;
+  height: 100vh;
+  font-size: 18px;
+  font-weight: 200;
+  line-height: 30px;
+  border-radius: 6px;
+  padding: 60px;
+}
+
+.pipa-dash h1 {
+  font-size: 60px;
+  line-height: 1;
+  letter-spacing: -1px;
+}
+
+.browsehappy {
+  margin: 0.2em 0;
+  background: #ccc;
+  color: #000;
+  padding: 0.2em 0;
+}

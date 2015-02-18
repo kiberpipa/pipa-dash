@@ -1,0 +1,21 @@
+@import '../../styles/settings.scss';
+
+.container header {
+  height: 40px;
+  padding: 20px;
+  font-size: 2em;
+  border-bottom-width: 2px;
+  border-bottom-style: solid;
+  border-bottom-color: $primary_color;
+}
+
+#title {
+  text-align: center;
+  color: $terciar_color;
+}
+
+#logo {
+  margin-top: -3px;
+  margin-right: 10px;
+  filter: invert(100%);
+}
