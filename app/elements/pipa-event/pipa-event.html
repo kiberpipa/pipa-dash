@@ -96,10 +96,13 @@
               return entry.pubDate > d;
             });
           }
-          console.log(this.feed);
+
+          this.changeImage();
         },
 
         changeImage: function() {
+          if (typeof this.feed == 'undefined') { return; }
+
           var post = this.feed.items[this.currentPost];
           this.currentPost = (this.currentPost + 1) % this.feed.items.length;
 
