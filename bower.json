@@ -6,7 +6,7 @@
     "polymer": "Polymer/polymer#^0.5.1",
     "polymer-fontawesome": "~1.0.0-beta.2",
     "lodash": "~3.2.0",
-    "polymer-rss": "~0.1.0"
+    "core-ajax": "Polymer/core-ajax#~0.5.5"
   },
   "devDependencies": {
     "web-component-tester": "Polymer/web-component-tester#^2.0.0"

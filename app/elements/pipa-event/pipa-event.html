@@ -1,20 +1,20 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/polymer-fontawesome/polymer-fontawesome.html">
-<link rel="import" href="../../bower_components/polymer-rss/rss-feed.html">
+<link rel="import" href="rss-feed.html">
 <script src="../../bower_components/feed/src/feed.js"></script>
 <script src="../../bower_components/lodash/lodash.js"></script>
 
-<polymer-element name="pipa-event" attributes="reverse url feedType">
+<polymer-element name="pipa-event" attributes="reverse url feedType imgPrefix imgSelector interval updateInterval">
   <template>
     <link rel="stylesheet" href="pipa-event.css">
     <rss-feed id="feed" url="{{url}}" auto on-feed-parsed="{{handleResponse}}"></rss-feed>
     <div horizontal layout>
       <template id="tpl-image">
         <div id="image" class="{{ {'paddingl': reverse} | tokenList }}">
-          <template if="{{banner != ""}}">
-            <img src="{{banner}}"></img>
+          <template if="{{image}}">
+            <img id="image" src="{{image}}"></img>
           </template>
-          <template if="{{!banner}}">
+          <template if="{{!image}}">
             <img src="images/kp.jpg"></img>
           </template>
         </div>
@@ -68,6 +68,8 @@
         loc: "Kiberpipa (Gosposvetska 2)",
         time: "Ponedeljek, 23. feb 2015 ob 17:00",
         reverse: false,
+        imgPrefix: "http://www.kiberpipa.org",
+        imgSelector: "thumbnail",
 
         currentPost: 0,
         interval: 10000,
@@ -110,6 +112,11 @@
           this.time = post.pubDate.toLocaleDateString('sl-SI', {month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric'});
           this.text = this.strip(post.description);
           this.location = post.location;
+          if (post._source.querySelector(this.imgSelector)) {
+            this.image =
+              this.imgPrefix +
+              post._source.querySelector(this.imgSelector).getAttribute("url");
+          }
         },
 
         strip: function(html) {
