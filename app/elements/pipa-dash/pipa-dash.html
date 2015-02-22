@@ -1,38 +1,33 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/polymer-fontawesome/polymer-fontawesome.html">
 <link rel="import" href="../pipa-event/pipa-event.html">
-<link rel="import" href="../pipa-event/pipa-container.html">
 
 <polymer-element name="pipa-dash" attributes="logo">
   <template>
     <link rel="stylesheet" href="pipa-dash.css">
     <div class="container" vertical layout>
       <header horizontal layout>
-        <div horizontal layout>
+        <div>
           <img id="logo" src="{{logo}}"></img>
-          <b>#dash</b>
         </div>
         <div id="title" flex>
           <a>All our code are belong to you</a>
         </div>
-        <div>
-          <font-awesome icon="clock-o" style="color: #21b384"></font-awesome>
-          <a>{{time}}</a>
+        <div id="datetime" layout vertical>
+          <div id="time">{{time}}</div>
+          <div id="date">{{date}}</div>
         </div>
       </header>
       <main>
-        <div horizontal layout>
-          <div flex>
-            <pipa-container name="Dogodki" icon="calendar">
-              <pipa-event id="events" feedType="events" url="https://www.kiberpipa.org/sl/feeds/dogodki/"></pipa-event>
-            </pipa-container>
-            <pipa-container name="Novice" icon="newspaper-o">
-              <pipa-event id="news" feedType="news" url="https://www.kiberpipa.org/sl/feeds/novice/" reverse></pipa-event>
-            </pipa-container>
-          </div>
+        <div horizontal around-justified layout>
+            <pipa-event id="events" feedType="events" url="https://www.kiberpipa.org/sl/feeds/dogodki/"></pipa-event>
+            <pipa-event id="news" feedType="news" url="https://www.kiberpipa.org/sl/feeds/novice/"></pipa-event>
         </div>
       </main>
       <footer>
+        <div class="address">
+            http://www.kiberpipa.org
+        </div>
       </footer>
     </div>
    </template>
@@ -41,12 +36,16 @@
     (function () {
 
       Polymer({
-        time: (new Date()).toLocaleTimeString(),
+        time: (new Date()).toLocaleTimeString("sl-SI"),
+        date: (new Date()).toLocaleDateString("sl-SI"),
 
         ready: function() {
           var that = this;
           setInterval(function () {
-            that.time = (new Date()).toLocaleTimeString();
+            // that.time = (new Date()).toLocaleTimeString();
+            var date = new Date();
+            that.time = date.toLocaleTimeString("sl-SI");
+            that.date = date.toLocaleDateString("sl-SI");
           }, 1000);
         }
 
