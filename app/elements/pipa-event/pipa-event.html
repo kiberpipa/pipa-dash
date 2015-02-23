@@ -1,62 +1,42 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/polymer-fontawesome/polymer-fontawesome.html">
 <link rel="import" href="rss-feed.html">
-<script src="../../bower_components/feed/src/feed.js"></script>
+<!--<script src="../../bower_components/feed/src/feed.js"></script>-->
 <script src="../../bower_components/lodash/lodash.js"></script>
+<link rel="import" href="../../bower_components/core-animation/core-animation.html">
 
 <polymer-element name="pipa-event" attributes="reverse url feedType imgPrefix imgSelector interval updateInterval">
   <template>
     <link rel="stylesheet" href="pipa-event.css">
     <rss-feed id="feed" url="{{url}}" auto on-feed-parsed="{{handleResponse}}"></rss-feed>
-    <div horizontal layout>
-      <template id="tpl-image">
-        <div id="image" class="{{ {'paddingl': reverse} | tokenList }}">
-          <template if="{{image}}">
-            <img id="image" src="{{image}}"></img>
-          </template>
-          <template if="{{!image}}">
-            <img src="images/kp.jpg"></img>
-          </template>
-        </div>
-      </template>
-      <template id="tpl-content">
-        <div id="content" class="{{ {'paddingl': !reverse} | tokenList }}" vertical layout flex>
-          <header>
-
-            <div id="title" horizontal layout>
-              <div><font-awesome icon="star"></font-awesome></div>
-              <div flex><a>{{caption}}</a></div>
+    <div id="wrapper">
+        <div id="container" vertical layout>
+          <div id="feedTypeName">{{feedTypeName}}</div>
+          <div id="title">
+            {{caption}}
+          </div>
+          <div id="main" layout horizontal>
+            <template if="{{image}}">
+              <img id="image" src="{{image}}"></img>
+            </template>
+            <template if="{{!image}}">
+              <img id="image" src="images/kp.jpg"></img>
+            </template>
+            <div id="text">{{text}}</div>
+          </div>
+          <template if="{{feedType == 'events'}}">
+          <div id="time" layout around-justified horizontal>
+            <div class="gradient">
+              <font-awesome icon="clock-o"></font-awesome><a>{{time}}</a>
             </div>
-
-            <template if="{{feedType == 'events'}}">
-              <div id="time">
-                <div horizontal around-justified layout>
-                  <div>
-                    <font-awesome icon="clock-o"></font-awesome><a >{{time}}</a>
-                  </div>
-                  <template if="{{loc != ''}}">
-                    <div>
-                      <font-awesome icon="location-arrow"></font-awesome><a >{{loc}}</a>
-                    </div>
-                  </template>
-                </div>
+            <template if="{{loc != ''}}">
+              <div class="gradient">
+                <font-awesome icon="location-arrow"></font-awesome><a>{{loc}}</a>
               </div>
             </template>
-
-          </header>
-          <main>
-            <font-awesome icon="file-text-o"></font-awesome><a id="text">{{text}}</a>
-          </main>
-        <div>
-      </template>
-      <template if={{reverse}}>
-        <template bind ref="tpl-content"></template>
-        <template bind ref="tpl-image"></template>
-      </template>
-      <template if={{!reverse}}>
-        <template bind ref="tpl-image"></template>
-        <template bind ref="tpl-content"></template>
-      </template>
+          </div>
+          </template>
+        </div>
     </div>
   </template>
   <script>
@@ -77,8 +57,13 @@
 
         // define element prototype here
         ready: function() {
-          setInterval(this.changeImage.bind(this), this.interval);
+          setInterval(this.animatedSwitch.bind(this), this.interval);
           setInterval(this.updateFeeds.bind(this), this.updateInterval);
+          if (this.feedType == "events") {
+              this.feedTypeName = "Dogodek";
+          } else if (this.feedType == "news") {
+              this.feedTypeName = "Novica";
+          }
         },
 
         updateFeeds: function() {
@@ -99,7 +84,7 @@
             });
           }
 
-          this.changeImage();
+          this.animatedSwitch();
         },
 
         changeImage: function() {
@@ -110,7 +95,7 @@
 
           this.caption = post.title;
           this.time = post.pubDate.toLocaleDateString('sl-SI', {month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric'});
-          this.text = this.strip(post.description);
+          this.text = this.getDescription(post.description);
           this.location = post.location;
           if (post._source.querySelector(this.imgSelector)) {
             this.image =
@@ -120,9 +105,35 @@
         },
 
         strip: function(html) {
-           var tmp = document.createElement("DIV");
-           tmp.innerHTML = html;
-           return tmp.textContent || tmp.innerText || "";
+          var tmp = document.createElement("DIV");
+          tmp.innerHTML = html;
+          return tmp.textContent || tmp.innerText || "";
+        },
+
+        getDescription: function(text) {
+          var description = this.strip(text);
+          if (description.length > 80) {
+              description = description.substring(0, 150) + "...";
+          }
+          return description;
+        },
+        animatedSwitch: function() {
+            this.animate(this.$.wrapper, false, function() {
+                this.changeImage();
+                setTimeout(function() {
+                    this.animate(this.$.wrapper, true, function() {})
+                }.bind(this), 500);
+            }.bind(this));
+        },
+        animate: function(elem, show, cb) {
+            var anim;
+            if (show) {
+                anim = new Animation(elem, [{opacity: "0", 'margin-top': '0', display: 'none'}, {opacity: "1", 'margin-top': '50px', display: 'flex'}], {fill: "forwards", duration: 200, easing: "ease"});
+            } else {
+                anim = new Animation(elem, [{opacity: "1", 'margin-top': '50px', display: 'flex'}, {opacity: "0", 'margin-top': '100px', display: 'none'}], {fill: "forwards", duration: 200, easing: "ease"});
+            }
+            var player = document.timeline.play(anim);
+            player.onfinish = cb;
         }
       });
 
