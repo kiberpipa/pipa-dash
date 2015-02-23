@@ -118,14 +118,37 @@ module.exports = function (grunt) {
         // change this to '0.0.0.0' to access the server from outside
         hostname: 'localhost'
       },
+      kiberpipa_feeds: {
+          proxies: [
+              {
+                  context: '/sl/feeds/',
+                  host: 'www.kiberpipa.org',
+                  port: 443,
+                  https: true,
+                  changeOrigin: true
+              }
+          ]
+      },
       livereload: {
         options: {
-          middleware: function (connect) {
-            return [
+          middleware: function (connect, options) {
+            if (!Array.isArray(options.base)) {
+                options.base = [options.base];
+            }
+
+            // Setup the proxy
+            var middlewares = [require("grunt-connect-proxy/lib/utils").proxyRequest];
+
+            // Serve static files.
+            options.base.forEach(function(base) {
+                middlewares.push(connect.static(base));
+            });
+
+            return ([
               lrSnippet,
               mountFolder(connect, '.tmp'),
               mountFolder(connect, yeomanConfig.app)
-            ];
+            ]).concat(middlewares);
           }
         }
       },
@@ -303,6 +326,7 @@ module.exports = function (grunt) {
       'copy:styles',
       'autoprefixer:server',
       'connect:livereload',
+      'configureProxies:kiberpipa_feeds',
       'open',
       'watch'
     ]);

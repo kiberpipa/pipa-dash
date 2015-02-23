@@ -25,7 +25,8 @@
     "time-grunt": "^0.4.0",
     "load-grunt-tasks": "^0.6.0",
     "jshint-stylish": "^0.4.0",
-    "web-component-tester": "^2.0.3"
+    "web-component-tester": "^2.0.3",
+    "grunt-connect-proxy": "=0.1.10"
   },
   "engines": {
     "node": ">=0.10.0"
