@@ -24,18 +24,16 @@
             </template>
             <div id="text">{{text}}</div>
           </div>
-          <template if="{{feedType == 'events'}}">
           <div id="time" layout around-justified horizontal>
             <div class="gradient">
               <font-awesome icon="clock-o"></font-awesome><a>{{time}}</a>
             </div>
-            <template if="{{loc != ''}}">
+            <template if="{{loc != '' && feedType == 'events'}}">
               <div class="gradient">
                 <font-awesome icon="location-arrow"></font-awesome><a>{{loc}}</a>
               </div>
             </template>
           </div>
-          </template>
         </div>
     </div>
   </template>
