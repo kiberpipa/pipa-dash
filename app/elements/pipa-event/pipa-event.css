@@ -11,13 +11,16 @@
   object-fit: contain;
 }
 
-#container {
+#wrapper {
   min-width: 820px;
   max-width: 820px;
-  background: -webkit-linear-gradient(black, rgba(255,255,255,0.3)); /* For Safari 5.1 to 6.0 */
-  background: linear-gradient(black, rgba(255,255,255,0.3)); /* Standard syntax */
   padding: 15px 15px 0 15px;
   margin: 1em;
+}
+
+#container {
+  background: -webkit-linear-gradient(black, rgba(255,255,255,0.3));
+  background: linear-gradient(black, rgba(255,255,255,0.3));
 }
 
 #title {

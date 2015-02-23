@@ -116,10 +116,10 @@
           return description;
         },
         animatedSwitch: function() {
-            this.animate(this.$.wrapper, false, function() {
+            this.animate(this.$.container, false, function() {
                 this.changeImage();
                 setTimeout(function() {
-                    this.animate(this.$.wrapper, true, function() {})
+                    this.animate(this.$.container, true, function() {})
                 }.bind(this), 500);
             }.bind(this));
         },
