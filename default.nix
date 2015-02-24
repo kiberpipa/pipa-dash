@@ -15,6 +15,7 @@ pkgs.stdenv.mkDerivation {
   buildPhase = ''
     substituteInPlace $out/var/Gruntfile.js \
       --replace "  'open'," "" \
+      --replace "lrSnippet," "" \
       --replace ".tmp" "/tmp/pipa-dash" \
       --replace \
         "loadPath: 'bower_components'" \
