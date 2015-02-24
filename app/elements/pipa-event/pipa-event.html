@@ -15,21 +15,23 @@
           <div id="title">
             {{caption}}
           </div>
-          <div id="main" layout horizontal>
-            <template if="{{image}}">
-              <img id="image" src="{{image}}"></img>
-            </template>
-            <template if="{{!image}}">
-              <img id="image" src="images/kp.jpg"></img>
-            </template>
+          <div id="main" layout vertical>
+            <div id="imagewrapper">
+                <template if="{{image}}">
+                  <img id="image" src="{{image}}"></img>
+                </template>
+                <template if="{{!image}}">
+                  <img id="image" src="images/kp.jpg"></img>
+                </template>
+            </div>
             <div id="text">{{text}}</div>
           </div>
           <div id="time" layout around-justified horizontal>
-            <div class="gradient">
+            <div class="">
               <font-awesome icon="clock-o"></font-awesome><a>{{time}}</a>
             </div>
             <template if="{{loc != '' && feedType == 'events'}}">
-              <div class="gradient">
+              <div class="">
                 <font-awesome icon="location-arrow"></font-awesome><a>{{loc}}</a>
               </div>
             </template>
@@ -63,6 +65,8 @@
           } else if (this.feedType == "news") {
               this.feedTypeName = "Novica";
           }
+          setTimeout(this.updateFeeds.bind(this));
+          setTimeout(this.animatedSwitch.bind(this), 2000);
         },
 
         updateFeeds: function() {
