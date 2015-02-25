@@ -27,13 +27,15 @@
             <div id="text">{{text}}</div>
           </div>
           <div id="time" layout around-justified horizontal>
-            <div class="">
-              <font-awesome icon="clock-o"></font-awesome><a>{{time}}</a>
-            </div>
-            <template if="{{loc != '' && feedType == 'events'}}">
-              <div class="">
-                <font-awesome icon="location-arrow"></font-awesome><a>{{loc}}</a>
-              </div>
+            <template if="{{feedType == 'events'}}">
+                <div>
+                  <font-awesome icon="clock-o"></font-awesome><a>{{time}}</a>
+                </div>
+              <template if="{{loc != ''}}">
+                <div>
+                  <font-awesome icon="location-arrow"></font-awesome><a>{{loc}}</a>
+                </div>
+              </template>
             </template>
           </div>
           <div class="meter"><span id="pipabar"></span></div>
@@ -114,30 +116,21 @@
         getDescription: function(text) {
           var description = this.strip(text);
           if (description.length > 80) {
-              description = description.substring(0, 150) + "...";
+              description = description.substring(0, 220) + "...";
           }
           return description;
         },
         animatedSwitch: function() {
             this.$.pipabar.className = "";
-            this.animate(this.$.container, false, function() {
+            this.$.container.className = "hide";
+            setTimeout(function() {
                 this.changeImage();
+                this.$.container.className = "";
                 setTimeout(function() {
-                    this.animate(this.$.container, true, function() {
-                        this.$.pipabar.className = "anim";
-                    }.bind(this));
+                    this.$.pipabar.className = "anim";
+                    this.$.container.className = "show";
                 }.bind(this), 500);
-            }.bind(this));
-        },
-        animate: function(elem, show, cb) {
-            var anim;
-            if (show) {
-                anim = new Animation(elem, [{opacity: "0", 'margin-top': '0', display: 'none'}, {opacity: "1", 'margin-top': '50px', display: 'flex'}], {fill: "forwards", duration: 200, easing: "ease"});
-            } else {
-                anim = new Animation(elem, [{opacity: "1", 'margin-top': '50px', display: 'flex'}, {opacity: "0", 'margin-top': '100px', display: 'none'}], {fill: "forwards", duration: 200, easing: "ease"});
-            }
-            var player = document.timeline.play(anim);
-            player.onfinish = cb;
+            }.bind(this), 500);
         }
       });
 
