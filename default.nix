@@ -29,6 +29,8 @@ pkgs.stdenv.mkDerivation {
     export GEM_HOME=$HOME/.gems
     export SSL_CERT_FILE=${pkgs.cacert}/etc/ca-bundle.crt
 
+    echo ":ssl_verify_mode: 0" > $HOME/.gemrc
+
     gem install sass
     npm install
     npm install grunt-cli
